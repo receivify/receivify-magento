@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+    Default configuration for the Receivify payment method.
+
+    `order_status` is pending_payment: the order is NOT paid until a signed
+    webhook says it is, and nothing should ship before then.
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <payment>
+            <receivify_payments>
+                <active>0</active>
+                <model>ReceivifyPaymentsFacade</model>
+                <title>Bitcoin &amp; crypto (Receivify)</title>
+                <order_status>pending_payment</order_status>
+                <api_url>https://receivify.io</api_url>
+                <asset>btc</asset>
+                <allowspecific>0</allowspecific>
+                <sort_order>90</sort_order>
+                <is_gateway>1</is_gateway>
+                <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>0</can_use_internal>
+            </receivify_payments>
+        </payment>
+    </default>
+</config>

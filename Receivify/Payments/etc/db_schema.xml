@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+    Webhook de-duplication.
+
+    Delivery is at-least-once and a manual replay re-sends the identical bytes,
+    so `event_key` ("<event>:<sequence>") is the primary key: claiming it is what
+    makes a repeat delivery a no-op. The table is intentionally not tied to
+    sales_order by a foreign key — an event for an order that no longer exists
+    must still be recorded as seen.
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="receivify_webhook_event" resource="default" engine="innodb"
+           comment="Receivify webhook de-duplication">
+        <column xsi:type="varchar" name="event_key" nullable="false" length="191"
+                comment="&lt;event&gt;:&lt;sequence&gt;"/>
+        <column xsi:type="varchar" name="increment_id" nullable="true" length="64"
+                comment="Order increment id from the invoice reference"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false"
+                default="CURRENT_TIMESTAMP" comment="When we first saw this event"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="event_key"/>
+        </constraint>
+        <index referenceId="RECEIVIFY_WEBHOOK_EVENT_INCREMENT_ID" indexType="btree">
+            <column name="increment_id"/>
+        </index>
+    </table>
+</schema>

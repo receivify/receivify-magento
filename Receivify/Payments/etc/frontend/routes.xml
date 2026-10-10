@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+    Frontend routes:
+      /receivify/checkout/start   creates the invoice and redirects to hosted checkout
+      /receivify/webhook          the signed callback
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="standard">
+        <route id="receivify" frontName="receivify">
+            <module name="Receivify_Payments"/>
+        </route>
+    </router>
+</config>

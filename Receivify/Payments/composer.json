@@ -1,0 +1,25 @@
+{
+    "name": "receivify/module-payments",
+    "description": "Accept Bitcoin and crypto in Magento 2 via Receivify. Non-custodial, fiat-priced, signed webhooks.",
+    "type": "magento2-module",
+    "license": "MIT",
+    "version": "1.0.0",
+    "require": {
+        "php": "~7.4.0||~8.1.0||~8.2.0||~8.3.0",
+        "ext-curl": "*",
+        "magento/framework": "*",
+        "magento/module-payment": "*",
+        "magento/module-sales": "*",
+        "magento/module-checkout": "*",
+        "magento/module-quote": "*",
+        "magento/module-store": "*"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Receivify\\Payments\\": ""
+        }
+    }
+}

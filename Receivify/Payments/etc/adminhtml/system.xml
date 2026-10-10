@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!--
+    Stores → Configuration → Sales → Payment Methods → Receivify.
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="payment">
+            <group id="receivify_payments" translate="label" type="text" sortOrder="90"
+                   showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Receivify (Bitcoin &amp; crypto)</label>
+
+                <field id="active" translate="label" type="select" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="title" translate="label" type="text" sortOrder="20"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Title</label>
+                    <comment>Shown to the customer at checkout.</comment>
+                </field>
+
+                <field id="api_url" translate="label comment" type="text" sortOrder="30"
+                       showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Receivify API URL</label>
+                    <comment>Base URL of your Receivify instance, e.g. https://receivify.io</comment>
+                    <validate>required-entry validate-url</validate>
+                </field>
+
+                <field id="api_key" translate="label comment" type="obscure" sortOrder="40"
+                       showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>API key</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <comment>Your rcv_live_... key. Stored encrypted; never sent to the browser.</comment>
+                </field>
+
+                <field id="webhook_secret" translate="label comment" type="obscure" sortOrder="50"
+                       showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Webhook secret</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <comment>Your whsec_... secret. Every callback is verified against it before the order is touched.</comment>
+                </field>
+
+                <field id="webhook_secret_previous" translate="label comment" type="obscure" sortOrder="60"
+                       showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Previous webhook secret</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <comment><![CDATA[Only while a rotation is inside its grace window (24h by default). Receivify signs with the <strong>current</strong> secret, but the previous one stays acceptable until it expires, so a receiver must accept either. Clear this afterwards.]]></comment>
+                </field>
+
+                <field id="asset" translate="label comment" type="select" sortOrder="70"
+                       showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Settlement coin</label>
+                    <source_model>Receivify\Payments\Model\Adminhtml\Source\Asset</source_model>
+                    <comment>The coin customers pay in. It must be enabled AND settleable in your Receivify admin.</comment>
+                </field>
+
+                <field id="order_status" translate="label comment" type="select" sortOrder="80"
+                       showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>New order status</label>
+                    <source_model>Magento\Sales\Model\Config\Source\Order\Status\NewStatus</source_model>
+                    <comment>The status an order gets while it waits for the crypto payment.</comment>
+                </field>
+
+                <field id="sort_order" translate="label" type="text" sortOrder="90"
+                       showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Sort order</label>
+                    <frontend_class>validate-number</frontend_class>
+                </field>
+
+                <field id="allowspecific" translate="label" type="allowspecific" sortOrder="100"
+                       showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Payment from applicable countries</label>
+                    <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                </field>
+
+                <field id="specificcountry" translate="label" type="multiselect" sortOrder="110"
+                       showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Payment from specific countries</label>
+                    <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                    <can_be_empty>1</can_be_empty>
+                    <depends><field id="allowspecific">1</field></depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
